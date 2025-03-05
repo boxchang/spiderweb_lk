@@ -45,7 +45,7 @@ class CountingDeviceAction():
                     FROM [PMG_DEVICE].[dbo].[COUNTING_DATA] c 
                     JOIN WO w on w.COUNTING_MACHINE = c.MachineName
                     WHERE MachineName = '{device_name}'
-                        AND Qty2 > 0
+                        AND (PreQty is not Null and Qty2 is not Null)
                     ORDER BY CreationTime DESC
                 ) AS LatestNonNullRow;
             
