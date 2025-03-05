@@ -32,14 +32,16 @@ class ScadaPLCAction():
                             where MachineName = '{device_name}' AND FT2 is not null
                         """
             rows = self.scada_db.select_sql_dict(sql)
-            given_time = datetime.strptime(rows[0]['last_time'][:-1], '%Y-%m-%d %H:%M:%S.%f')
-            current_time = datetime.now()
-            time_difference = current_time - given_time
 
-            if time_difference > timedelta(minutes=30):
-                status = "E01"
-                given_time = given_time.replace(microsecond=0).strftime("%Y-%m-%d %H:%M:%S")
-                msg = f"The last time is {given_time} already over 30 mins"
+            if rows[0]['last_time'] is not None:
+                given_time = datetime.strptime(rows[0]['last_time'][:-1], '%Y-%m-%d %H:%M:%S.%f')
+                current_time = datetime.now()
+                time_difference = current_time - given_time
+
+                if time_difference > timedelta(minutes=30):
+                    status = "E01"
+                    given_time = given_time.replace(microsecond=0).strftime("%Y-%m-%d %H:%M:%S")
+                    msg = f"The last time is {given_time} already over 30 mins"
 
         except Exception as e:
             print(e)
