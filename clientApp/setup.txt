@@ -1,0 +1,17 @@
+1/. open terminal run
+
+-> Build client setup app
+pyinstaller --onefile --windowed  --icon=lib/setup.ico clientSetup.py
+
+-> Build client app
+python clientBuild.py build
+
+2/. In "build" folder, delete "clientSetup" folder,
+
+3/. After delete, copy "clientSetup.exe" from "dist" folder to
+"build/exe.win-amd64-3.12" folder.
+
+4/. Copy "lib" from same directory with build to "build/exe.win-amd64-3.12"
+(don't delete "lib" inside "build/exe.win-amd64-3.12")
+
+5/. Delete "client.ico" and "frozen_application_license.txt" in "build/exe.win-amd64-3.12"
