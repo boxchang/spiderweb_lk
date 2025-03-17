@@ -1,16 +1,12 @@
 import sys
 import os
-
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from factory.factory_equipment import CountingDeviceMonitor, AOIDeviceMonitor, ScadaPLCMonitor
 from factory.key_device import KeyDeviceMonitor
 from factory.mes_data_status import MesDataStatusMonitor
 from factory.sap_data_status import SapDataStatusMonitor
 from factory.wecom import WecomMonitor
 from utils import Utils
-
-curPath = os.path.abspath(os.path.dirname(__file__))
-rootPath = os.path.split(curPath)[0]
-sys.path.append(rootPath)
 import threading
 import time
 

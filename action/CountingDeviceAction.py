@@ -29,7 +29,7 @@ class CountingDeviceAction():
               LEFT JOIN [PMGMES].[dbo].[PMG_MES_WorkOrder] w on r.WorkOrderId = w.Id
               where r.InspectionDate = '{today}' and COUNTING_MACHINE = '{device_name}'
               )
-            
+
             SELECT last_time, Speed
                 FROM (
                     SELECT TOP 1 CreationTime as last_time, Speed
@@ -45,10 +45,10 @@ class CountingDeviceAction():
                     FROM [PMG_DEVICE].[dbo].[COUNTING_DATA] c 
                     JOIN WO w on w.COUNTING_MACHINE = c.MachineName
                     WHERE MachineName = '{device_name}'
-                        AND (PreQty is not Null and Qty2 is not Null)
+                        AND Qty IS NOT NULL
                     ORDER BY CreationTime DESC
                 ) AS LatestNonNullRow;
-            
+
             """
         try:
 
@@ -66,22 +66,13 @@ class CountingDeviceAction():
                     given_time = given_time.replace(microsecond=0).strftime("%Y-%m-%d %H:%M:%S")
                     msg = f"The last time is {given_time} already over 30 mins"
                 else:
-                    last_null = datetime.strptime(rows[0]['last_time'][:-1], '%Y-%m-%d %H:%M:%S.%f')
-                    last_time = datetime.strptime(rows[1]['last_time'][:-1], '%Y-%m-%d %H:%M:%S.%f')
-                    last_value = rows[1]['Speed']
-
-                    if last_value is None or (last_value > 0 and last_time - last_null > timedelta(minutes=30)):  # 最後有值的機速大於0，且Null值的時間差超過30分鐘才判斷異常
-                        status = "E01"
-                        last_null = last_null.replace(microsecond=0).strftime("%Y-%m-%d %H:%M:%S")
-                        msg = f"NULL from {last_null}"
-                    else:
-                        if rows[0]['Speed'] is None:
-                            # status = "E10"
-                            # msg = f"{device_name} speed is None"
-                            pass
-                        elif int(rows[0]['Speed']) > speed:
-                            status = "E09"
-                            msg = f"{device_name} speed is > 220"
+                    if rows[0]['Speed'] is None:
+                        # status = "E10"
+                        # msg = f"{device_name} speed is None"
+                        pass
+                    elif int(rows[0]['Speed']) > speed:
+                        status = "E09"
+                        msg = f"{device_name} speed is > 220"
 
         except Exception as e:
             print(e)

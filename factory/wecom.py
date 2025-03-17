@@ -19,9 +19,11 @@ class WecomMonitor(Monitor):
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         wecom_file = os.path.join(path, "dt_wecom_key.config")
         url = ''  # Add Wecom GD_MES group key
+        print(wecom_file)
         if os.path.exists(wecom_file):
             with open(wecom_file, 'r') as file:
                 url = file.read().strip()
+                print(url)
         headers = {'Content-Type': 'application/json; charset=utf-8'}
         data = {
             "msgtype": "markdown",

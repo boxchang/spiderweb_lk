@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 from action.AOIDeviceAction import AOIDeviceAction
 from action.CountingDeviceAction import CountingDeviceAction
 from action.ScadaPLCAction import ScadaPLCAction

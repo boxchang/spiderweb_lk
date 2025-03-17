@@ -1,7 +1,5 @@
 import os
 import pyodbc
-from sqlite3 import Error
-
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -32,12 +30,12 @@ class vnedc_database:
     def create_vnedc_connection(self):
         try:
             conn = pyodbc.connect("DRIVER={{SQL Server}};SERVER={server}; database={database}; \
-                                   trusted_connection=no;UID={uid};PWD={pwd}".format(server="192.168.12.201",
+                                   trusted_connection=no;UID={uid};PWD={pwd}".format(server="10.14.102.11",
                                                                                      database="LKEDC",
                                                                                      uid="vnedc",
                                                                                      pwd="vnedc#2024"))
             return conn
-        except Error as e:
+        except Exception as e:
             print(e)
 
         return None
@@ -74,7 +72,7 @@ class scada_database:
                                                                                      uid="scadauser",
                                                                                      pwd="pmgscada+123"))
             return conn
-        except Error as e:
+        except Exception as e:
             print(e)
 
         return None
@@ -112,7 +110,7 @@ class mes_database:
                                                                                      uid="scadauser",
                                                                                      pwd="pmgscada+123"))
             return conn
-        except Error as e:
+        except Exception as e:
             print(e)
 
         return None
