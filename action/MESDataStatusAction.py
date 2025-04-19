@@ -142,6 +142,37 @@ class MESDataStatusAction():
                                 msg = f"{item[0]} ({item[1]}) Need to set SCADA standard values"
                                 return status, msg
 
+            elif 'CUSTOMER_CODE' in device_name:
+                invalid_codes = []
+
+                sql1 = f"""
+                                  SELECT DISTINCT CustomerCode
+                                  FROM [PMGMES].[dbo].[PMG_MES_WorkOrder] 
+                                  WHERE CustomerCode <> '' and CreationTime > GETDATE()-2
+                                """
+
+                sql2 = f"""
+                                  SELECT [CustomerCode] 
+                                  FROM [MES_OLAP].[dbo].[sap_customer_define]
+                                """
+
+                customer = self.mes_db.select_sql_dict(sql1)
+                customer_define = self.mes_olap_db.select_sql_dict(sql2)
+
+                for code in customer:
+                    if code not in customer_define:
+                        invalid_codes.append(code)
+
+                if len(invalid_codes) > 0:
+                    status = "E17"
+                    customer_code = ', '.join(invalid_codes)
+                    msg = f"{customer_code} Customer Code not existed"
+                else:
+                    status = "S01"
+                    msg = ""
+
+                return status, msg
+
         except Exception as e:
             print(e)
             status = "E99"

@@ -55,7 +55,7 @@ class Monitor(ABC):
                     JOIN [LKEDC].[dbo].[spiderweb_monitor_type] mt on c.monitor_type_id = mt.id
                     JOIN [LKEDC].[dbo].[spiderweb_device_type] dt on c.device_type_id = dt.id
                     JOIN [LKEDC].[dbo].[spiderweb_monitor_status] s on c.status_id = s.status_code and dt.type_name='{device_type}'
-                    WHERE enable = 'Y' and (GETDATE() > CONVERT(DATETIME, stop_before, 103) or stop_before ='')"""
+                    WHERE enable = 'Y' and (GETDATE() > CONVERT(DATETIME, stop_before, 103) or stop_before ='' or stop_before is null)"""
         rows = self.vnedc_db.select_sql_dict(sql)
 
         devices = [
