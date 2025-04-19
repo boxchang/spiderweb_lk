@@ -157,7 +157,7 @@ class MESDataStatusAction():
                                 """
 
                 customer = self.mes_db.select_sql_dict(sql1)
-                customer_define = self.mes_olap_db.select_sql_dict(sql2)
+                customer_define = self.vnedc_db.select_sql_dict(sql2)
 
                 for code in customer:
                     if code not in customer_define:
