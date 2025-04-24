@@ -17,7 +17,7 @@ class ScadaPLCAction():
         table_name = device.attr1
         msg = ""
         status = "S01"
-        today = date.today().strftime("%Y-%m-%d")
+        today = datetime.today().strftime('%Y-%m-%d')
 
         try:
             sql = f"""
